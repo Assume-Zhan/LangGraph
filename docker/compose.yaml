@@ -43,4 +43,4 @@ services:
       # Mount X11 server
       - /tmp/.X11-unix:/tmp/.X11-unix
       # Mount tmp data
-      - ${HOME}/Documents/Projects/drl-final/clip:/home/user/workspace
+      - ../:/home/user/workspace
