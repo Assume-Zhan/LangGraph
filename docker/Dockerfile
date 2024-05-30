@@ -56,6 +56,9 @@ RUN groupadd --gid ${USERGID} ${USERNAME} \
 USER ${USERNAME}
 WORKDIR /home/${USERNAME}
 
+RUN pip install ftfy regex tqdm matplotlib
+RUN pip install git+https://github.com/openai/CLIP.git
+
 RUN sudo apt autoremove -y && \
     sudo apt clean -y
 
