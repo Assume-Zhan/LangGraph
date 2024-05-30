@@ -1,0 +1,22 @@
+node_descriptions: [
+  ["bed.png", "Go to the bed", [0., 0.]], 
+  ["barbell.png", "Go to the barbell", [0., 1.]],
+  ["blue_chair.png", "Go to the chair with blue color", [0., 0.]],
+  ["door.png", "Go to the door", [0., 0.]],
+  ["gas_stove2.png", "Go to the gas stove in kitchen", [0., 0.]],
+  ["org_chair.png", "Go to the chair with orange color", [0., 0.]],
+  ["refregerator.png", "Go to the refregerator with silver color in kitchen", [0., 0.]],
+  ["sink.png", "Go to the sink in kitchen", [0., 0.]],
+  ["sofa2.png", "Go to the sofa with white color", [0., 0.]],
+  ["trash_can.png", "Go to the trash can", [0., 0.]],
+  ["tv.png", "Go to the TV", [0., 0.]],
+  ["yellow_table_with_ipad.png", "Go to the yellow table with ipad", [0., 0.]],
+  ["yellow_table_with_tomato_table.png", "Go to the yellow table with tomato picture", [0., 0.]],
+]
+
+image_dir: "./data/img/"
+
+input_text: [
+  "Go to the bed", 
+  "Go to the chairs with blue color"
+]
