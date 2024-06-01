@@ -89,3 +89,48 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix
       # Mount tmp data
       - ../:/home/user/workspace
+
+  clip-pytorch-ros:
+    build: 
+      context: .
+      dockerfile: Dockerfile.ros
+      args:
+        USERNAME: user
+    image: assume/clip-pytorch-ros:latest
+    container_name: clip-pytorch-ros
+    stdin_open: true
+    tty: true
+    privileged: true
+    ipc: host
+
+    command: /bin/bash
+
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+
+    network_mode: host
+    working_dir: /home/user
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XMODIFIERS=@im=fcitx
+      - GTK_IM_MODULE=fcitx
+      - QT_IM_MODULE=fcitx
+      - GID=1000
+      - UID=1000
+      - DISPLAY
+      - NVIDIA_DRIVER_CAPABILITIES=all
+    volumes:
+      # Mount local timezone into container. ( Readonly )
+      # Reference: https://stackoverflow.com/questions/57607381/how-do-i-change-timezone-in-a-docker-container
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /dev:/dev
+      # Mount X11 server
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      # Mount tmp data
+      - ../:/home/user/workspace
