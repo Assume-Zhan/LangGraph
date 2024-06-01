@@ -13,6 +13,10 @@ def _get_parser():
 
     # Image directory
     parser.add_argument("--image_dir", type=str, default="./data/im", help="Directory containing images")
+
+    # Output directory and folder name
+    parser.add_argument("--output_dir", type=str, default="./output", help="Output directory")
+    parser.add_argument("--output_file", type=str, default="output", help="Output file name")
     
     # Add arguments for utility functions
     parser.add_argument("--config_folder", type=str, default="config", help="Folder containing configuration files")

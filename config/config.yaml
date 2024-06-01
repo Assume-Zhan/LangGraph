@@ -16,6 +16,9 @@ node_descriptions: [
 
 image_dir: "./data/img/"
 
+output_dir: "./output/"
+output_file: "output.npy"
+
 input_text: [
   "Go to the bed", 
   "Go to the chairs with blue color"
