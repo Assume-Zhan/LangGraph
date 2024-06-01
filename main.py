@@ -1,6 +1,4 @@
 import numpy as np
-import torch
-import clip
 
 from PIL import Image
 
@@ -29,8 +27,17 @@ def create_graph(p):
 
     return graph
 
+def output_point(output_file, node: Node):
+
+    # Clear the original content of output file
+    with open(output_file, "w") as file:
+        np.save(output_file, node.point)
+
 def main():
     p = get_config()
+
+    # Set the output file
+    output_file = p.output_dir + p.output_file
 
     # Create the graph
     graph = create_graph(p)
@@ -44,6 +51,12 @@ def main():
     # Get input text by the parser
     for text in p.input_text:
         node, _ = graph.query_text(text)
+
+        # Log the node point
+        print(f"Node point: {node}")
+
+        # Output the point
+        output_point(output_file, node)
 
         print(f"=========== Querying graph with text: {text} ===========")
 
