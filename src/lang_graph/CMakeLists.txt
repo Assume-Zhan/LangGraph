@@ -36,4 +36,10 @@ install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 
+# Install folders config, launch
+install(DIRECTORY
+  config launch data
+  DESTINATION share/${PROJECT_NAME}
+)
+
 ament_package()
