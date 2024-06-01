@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 
+import rclpy
+from rclpy.node import Node
+
 import numpy as np
 
 from PIL import Image
 
-from Node import Node
-from Graph import Graph
-from utils.ArgParser import get_config
+from lang_graph.Node import Node
+from lang_graph.Graph import Graph
+from lang_graph.utils.ArgParser import get_config
 
-def create_graph(p):
+def create_graph(p, image_folder):
 
-    image_dir = p.image_dir
+    image_dir = image_folder
     
     print(f"=========== Creating graph with images from {image_dir} ===========")
 
@@ -29,20 +32,38 @@ def create_graph(p):
 
     return graph
 
-def output_point(output_file, node: Node):
+class ROSParamServer(rclpy.node.Node):
 
-    # Clear the original content of output file
-    with open(output_file, "w") as file:
-        np.save(output_file, node.point)
+    def __init__(self):
+        super().__init__("ros_param_server")
 
-def main():
-    p = get_config()
+        self.declare_parameter("config_file", "config/config.yaml")
+        self.declare_parameter("image_folder", "data/img")
 
-    # Set the output file
-    output_file = p.output_dir + p.output_file
+    def get_params(self):
+        return {
+            "config_file": self.get_parameter("config_file").value,
+            "image_folder": self.get_parameter("image_folder").value
+        }
+
+def main(args=None):
+
+    # Setup the ROS2 node
+    rclpy.init(args=args)
+
+    # Get ROS2 parameters
+    ros_param_server = ROSParamServer()
+
+    # Get the configuration
+    config_file = ros_param_server.get_params()["config_file"]
+    image_folder = ros_param_server.get_params()["image_folder"]
+
+    print(f"Configuration file: {config_file}")
+
+    p = get_config(config_file)
 
     # Create the graph
-    graph = create_graph(p)
+    graph = create_graph(p, image_folder)
 
     # Encode the images
     graph.encode_images()
@@ -56,9 +77,6 @@ def main():
 
         # Log the node point
         print(f"Node point: {node}")
-
-        # Output the point
-        output_point(output_file, node)
 
         print(f"=========== Querying graph with text: {text} ===========")
 
