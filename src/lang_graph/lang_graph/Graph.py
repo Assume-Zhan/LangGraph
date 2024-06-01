@@ -4,7 +4,7 @@ import torch
 import numpy as np
 
 from PIL import Image
-from Node import Node
+from lang_graph.Node import Node
 
 class Graph:
     
