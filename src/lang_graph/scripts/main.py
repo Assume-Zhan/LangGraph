@@ -15,6 +15,7 @@ from lang_graph.utils.ArgParser import get_config
 from std_msgs.msg import Int32 
 
 # Minimal publisher
+# Set next node: ros2 topic pub /lang_node_callback std_msgs/msg/Int32 data:\ 1\
 class LangNodePub(rclpy.node.Node):
 
     def __init__(self, graph, input_text):
@@ -22,6 +23,9 @@ class LangNodePub(rclpy.node.Node):
 
         # Int publisher
         self.publisher_ = self.create_publisher(Int32, 'lang_node', 10)
+
+        # Int subscriber
+        self.subscription = self.create_subscription(Int32, 'lang_node_callback', self.listener_callback, 10)
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
@@ -33,18 +37,32 @@ class LangNodePub(rclpy.node.Node):
         self.graph = graph
         self.input_text = input_text
 
+        # Flag for publish the next node
+        self.publish_next = False
+
+        self.current_index = 0
+
     def timer_callback(self):
+
+        if self.publish_next:
+            self.publish_next = False
+            self.current_index  = min(self.current_index + 1, len(self.input_text) - 1)
         
         # if self.publish_next:
         msg = Int32()
 
         # Query the graph with the input text
-        node, _, index = self.graph.query_text(self.input_text[0])
+        node, _, index = self.graph.query_text(self.input_text[self.current_index])
 
         # Send the node point
         msg.data = index
 
         self.publisher_.publish(msg)
+
+    def listener_callback(self, msg):
+
+        if msg.data == 1:
+            self.publish_next = True
 
 def create_graph(p, image_folder):
 
