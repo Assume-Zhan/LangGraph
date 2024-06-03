@@ -55,12 +55,10 @@ class Graph:
         # Calculate the similarity
         similarity = (100 * query_features @ self.image_features.T)
 
-        print(f"Similarity: {similarity}")
-
         # Get the most similar node
         max_similarity, max_index = similarity[0].max(dim=0)
 
-        return self.nodes[max_index.item()], max_similarity.item()
+        return self.nodes[max_index.item()], max_similarity.item(), max_index.item()
 
 # Test the graph
 if __name__ == "__main__":

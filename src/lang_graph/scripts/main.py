@@ -11,6 +11,41 @@ from lang_graph.Node import Node
 from lang_graph.Graph import Graph
 from lang_graph.utils.ArgParser import get_config
 
+# Import int
+from std_msgs.msg import Int32 
+
+# Minimal publisher
+class LangNodePub(rclpy.node.Node):
+
+    def __init__(self, graph, input_text):
+        super().__init__('lang_node_pub')
+
+        # Int publisher
+        self.publisher_ = self.create_publisher(Int32, 'lang_node', 10)
+
+        timer_period = 0.1  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.i = 0
+
+        # Flag for publish the next node
+        self.publish_next = False
+
+        self.graph = graph
+        self.input_text = input_text
+
+    def timer_callback(self):
+        
+        # if self.publish_next:
+        msg = Int32()
+
+        # Query the graph with the input text
+        node, _, index = self.graph.query_text(self.input_text[0])
+
+        # Send the node point
+        msg.data = index
+
+        self.publisher_.publish(msg)
+
 def create_graph(p, image_folder):
 
     image_dir = image_folder
@@ -71,18 +106,11 @@ def main(args=None):
     # Encode the text
     graph.encode_text()
 
-    # Get input text by the parser
-    for text in p.input_text:
-        node, _ = graph.query_text(text)
+    # Create the ROS2 node
+    lang_node_pub = LangNodePub(graph, input_text=p.input_text)
 
-        # Log the node point
-        print(f"Node point: {node}")
-
-        print(f"=========== Querying graph with text: {text} ===========")
-
-        # Display the most similar node
-        node.display()
-
+    while rclpy.ok():
+        rclpy.spin_once(lang_node_pub)
 
 if __name__ == "__main__":
     main()
