@@ -1,5 +1,4 @@
 node_descriptions: [
-  ["bed.png", "Go to the bed", [-6.18, 0.62]], 
   ["barbell.png", "Go to the barbell", [2.04, 2.77]],
   ["blue_chair.png", "Go to the chair with blue color", [5.50, 1.87]],
   ["door.png", "Go to the door", [5.99, -5.22]],
@@ -8,10 +7,7 @@ node_descriptions: [
   ["refregerator.png", "Go to the refregerator with silver color in kitchen", [7.79, -0.98]],
   ["sink.png", "Go to the sink in kitchen", [7.80, -4.41]],
   ["sofa2.png", "Go to the sofa with white color", [-0.24, -0.16]],
-  ["trash_can.png", "Go to the trash can", [2.70, -0.48]],
-  ["tv.png", "Go to the TV", [0.65, -4.39]],
   ["yellow_table_with_ipad.png", "Go to the yellow table with ipad", [1.89, -2.33]],
-  ["yellow_table_with_tomato_table.png", "Go to the yellow table with tomato picture", [0.58, -1.53]],
 ]
 
 input_text: [
