@@ -7,22 +7,24 @@ Use CLIP for creating the graph with image and language embeddings
 ### Prepare data
 
 Download the testing image sceenshot from the gazebo world on the google drive [link](https://drive.google.com/drive/u/1/folders/1JCm88xQY8XugXqoJuo6_jMQ8Cx_p8gx_).
-Please put the images in the folder `LangGraph/data/img/`, and the structure will be like above.
+Please put the images in the folder `LangGraph/src/lang_graph/data/img/`, and the structure will be like above.
 
 ```
 LangGraph
-├── config
-├── data
-|   └── img
-|       ├── .gitkeep
-|       ├── barbell.png
-|       ├── bed.png
-|       ├── blue_chair.png
-|       └── ...
+├── src
+|   └── lang_graph
+|       ├── config
+|       └── data
+|           └── img
+|               ├── .gitkeep
+|               ├── barbell.png
+|               ├── bed.png
+|               ├── blue_chair.png
+|               └── ...
 ├── docker
 |   ├── compose.yaml
+|   ├── Dockerfile.ros
 |   └── Dockerfile
-├── utils
 ├── .gitignore
 └── README.md
 ```
@@ -36,15 +38,25 @@ LangGraph
     ```
 - Build the docker image with compose file
     ```bash
-    docker compose run --rm --build clip-pytorch
+    docker compose run --rm --build clip-pytorch-ros-build
     ```
 ## Run
 
 ### Test with image screenshot from the gazebo world
 
-- Run the container with the compose file
+- Run the container with the compose file.
     ```bash
-    docker compose run --rm clip-pytorch-infer
+    docker compose run --rm clip-pytorch-run
+    ```
+
+- Later on, the result will publish to the topic `/lang_node` with `int32` type, and you can see the result by running the following command.
+    ```bash
+    ros2 topic echo /lang_node
+    ```
+
+- If you have multiple input text in config `input_text`, you can directly pub to the topic `/lang_node_callback` with `int32` type, and you can move the input to the next one by running the following command.
+    ```bash
+    ros2 topic pub /lang_node_callback std_msgs/msg/Int32 data:\ 1
     ```
 
 ### Add node to graph
